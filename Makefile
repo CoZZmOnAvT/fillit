@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/10 12:28:22 by pgritsen          #+#    #+#              #
-#    Updated: 2017/11/15 13:00:38 by pgritsen         ###   ########.fr        #
+#    Updated: 2017/11/15 13:24:47 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME	=	fillit
 
 HEADERS	=	fillit.h
 
-SRC		=	heart.c validate.c
+SRC		=	heart.c validate.c bit_operations.c
 
 OBJDIR	=	obj
 
