@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 20:22:27 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/15 15:00:25 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/15 18:21:06 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <string.h>
 # include <stdlib.h>
+#include <unistd.h>
+# include <fcntl.h>
 
 # define CHAR_BITS (sizeof(char) * 8)
 
@@ -33,12 +35,14 @@ typedef struct	s_row
 	struct s_row	*down;
 }				t_row;
 
-typedef struct	s_figures
+typedef struct	s_figure
 {
 	char			name;
 	char			matrix[4][4];
+	unsigned char	width;
+	unsigned char	height;
 	struct s_figure	*next;
-}				t_figures;
+}				t_figure;
 
 typedef struct	s_solution
 {
@@ -58,7 +62,7 @@ extern t_row		*g_basic_matrix;
 
 extern t_row		*g_tmp_matrix;
 
-extern t_figures	*figures;
+extern t_figure		*figures;
 
 extern t_solution	*b_sol;
 
@@ -73,5 +77,11 @@ char			get_bit_value(char string, unsigned char index);
 void			set_bit_true(char *string, unsigned char index);
 
 void			set_bit_false(char *string, unsigned char index);
+
+char			get_figures(char *file_name);
+
+void			figure_push(t_figure **dest, char name, char matrix[4][4]);
+
+t_figure		*new_figure(char name, char matrix[4][4]);
 
 #endif
