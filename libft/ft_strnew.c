@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate.c                                         :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/09 20:22:56 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/10 20:03:54 by pgritsen         ###   ########.fr       */
+/*   Created: 2017/10/25 18:23:18 by pgritsen          #+#    #+#             */
+/*   Updated: 2017/11/09 18:52:34 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "libft.h"
+#include <stdlib.h>
 
-t_bool	validate_tetriminos(char **tetr)
+char	*ft_strnew(size_t size)
 {
-	(void)tetr;
-	return (true);
+	char		*tmp;
+	size_t		it;
+
+	tmp = (char *)malloc((size + 1) * sizeof(char));
+	if (tmp == NULL)
+		return (NULL);
+	it = 0;
+	while (it <= size)
+		tmp[it++] = 0;
+	return (tmp);
 }

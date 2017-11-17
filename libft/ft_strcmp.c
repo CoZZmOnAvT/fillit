@@ -1,37 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heart.c                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/09 20:21:42 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/17 18:25:22 by pgritsen         ###   ########.fr       */
+/*   Created: 2017/10/30 19:04:56 by pgritsen          #+#    #+#             */
+/*   Updated: 2017/11/10 20:57:00 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
-#include <stdio.h>
-
-int			g_figure_count = 0;
-
-int			g_square_size = 0;
-
-t_row		*g_basic_matrix = NULL;
-
-t_figure	*g_figures = NULL;
-
-t_solution	*g_b_sol = NULL;
-
-int		main(int ac, char **av)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	(void)av;
-	if (ac != 2)
-		return (write(1, "usage: ./fillit [tetriminos_sample]\n", 36));
-	if (!get_figures(av[1]))
-		return (write(1, "error\n", 6));
-	fill_basic_matrix();
-	ft_solve();
-	//print_result();
+	while (*s1 || *s2)
+		if (*s1++ != *s2++)
+			return ((unsigned char)*(s1 - 1) - (unsigned char)*(s2 - 1));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 20:22:27 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/15 18:21:06 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/17 18:25:27 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,43 @@
 
 # include <string.h>
 # include <stdlib.h>
-#include <unistd.h>
+# include <unistd.h>
 # include <fcntl.h>
 
 # define CHAR_BITS (sizeof(char) * 8)
+
+# define INT_BITS (sizeof(int) * 8)
 
 /*
 **	Typedefs
 */
 
-typedef enum	e_bool
+typedef enum		e_bool
 {
 	false, true
-}				t_bool;
+}					t_bool;
 
-typedef struct	s_row
+typedef struct		s_row
 {
-	char			*columns;
-	struct s_row	*down;
-}				t_row;
+	struct s_row	*prev;
+	unsigned int	*columns;
+	struct s_row	*next;
+}					t_row;
 
-typedef struct	s_figure
+typedef struct		s_figure
 {
 	char			name;
 	char			matrix[4][4];
 	unsigned char	width;
 	unsigned char	height;
 	struct s_figure	*next;
-}				t_figure;
+}					t_figure;
 
-typedef struct	s_solution
+typedef struct		s_solution
 {
-	char			name;
-	unsigned char	x;
-	unsigned char	y;
+	t_row			*position;
 	struct s_figure	*next;
-}				t_solution;
+}					t_solution;
 
 /*
 **	Global variables
@@ -58,30 +59,40 @@ typedef struct	s_solution
 
 extern int			g_figure_count;
 
+extern int			g_square_size;
+
 extern t_row		*g_basic_matrix;
 
 extern t_row		*g_tmp_matrix;
 
-extern t_figure		*figures;
+extern t_figure		*g_figures;
 
-extern t_solution	*b_sol;
-
-extern t_solution	*t_sol;
+extern t_solution	*g_b_sol;
 
 /*
 **	Prototypes
 */
 
-char			get_bit_value(char string, unsigned char index);
+unsigned char		get_bit_value(unsigned int string, char index);
 
-void			set_bit_true(char *string, unsigned char index);
+void				set_bit_true(unsigned int *string, char index);
 
-void			set_bit_false(char *string, unsigned char index);
+void				set_bit_false(unsigned int *string, char index);
 
-char			get_figures(char *file_name);
+t_bool				get_figures(char *file_name);
 
-void			figure_push(t_figure **dest, char name, char matrix[4][4]);
+void				figure_push(t_figure **dest, char name, char matrix[4][4]);
 
-t_figure		*new_figure(char name, char matrix[4][4]);
+t_figure			*new_figure(char name, char matrix[4][4]);
+
+void				ft_solve(void);
+
+int					get_biggest_sqrt(int num);
+
+void				fill_basic_matrix(void);
+
+void				push_row(t_row **dest, int columns);
+
+void				add_row(t_row **dest, t_row *src);
 
 #endif
