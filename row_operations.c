@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:41:30 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/17 18:20:42 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/18 21:06:20 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,74 @@ static t_row	*new_row(int columns)
 		return (NULL);
 	if (!(new->columns = (unsigned int *)ft_memalloc(columns * sizeof(int))))
 		return (NULL);
-	new->next = NULL;
-	new->prev = NULL;
+	new->next = new;
+	new->prev = new;
 	return (new);
 }
 
-void			push_row(t_row **dest, int columns)
+t_row			*push_row(t_row **dest, unsigned int *columns, int size)
 {
 	t_row	*new;
 
 	if (!dest)
-		return ;
-	if (!(new = new_row(columns)))
-		return ;
-	if (*dest)
-		(*dest)->prev = new;
+		return (NULL);
+	if (!(new = new_row(size)))
+		return (NULL);
+	if (columns)
+		while (size-- >= 0)
+			new->columns[size] = columns[size];
+	if (!*dest)
+	{
+		*dest = new;
+		return (*dest);
+	}
+	(*dest)->prev->next = new;
+	new->prev = (*dest)->prev;
+	(*dest)->prev = new;
 	new->next = *dest;
-	*dest = new;
+	return (*dest);
+}
+
+void			pop_row(t_row **src)
+{
+	t_row	*buff;
+
+	(*src)->prev->prev->next = *src;
+	buff = (*src)->prev;
+	(*src)->prev = (*src)->prev->prev;
+	free(buff);
 }
 
 void			add_row(t_row **dest, t_row *src)
 {
 	if (!dest)
 		return ;
-	if (*dest)
-		(*dest)->prev = src;
+	if (!*dest)
+	{
+		src->prev = src;
+		src->next = src;
+		*dest = src;
+		return ;
+	}
+	(*dest)->prev->next = src;
+	src->prev = (*dest)->prev;
+	(*dest)->prev = src;
 	src->next = *dest;
-	*dest = src;
+}
+
+void			add_row_at_the_beginning(t_row **dest, t_row *src)
+{
+	if (!dest)
+		return ;
+	if (!*dest)
+	{
+		src->prev = src;
+		src->next = src;
+		*dest = src;
+		return ;
+	}
+	src->next = (*dest)->next;
+	src->prev = *dest;
+	(*dest)->next->prev = src;
+	(*dest)->next = src;
 }

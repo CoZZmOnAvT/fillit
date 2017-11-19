@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 15:10:23 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/17 11:34:13 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/18 18:38:08 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 **	Function moves figure in figure->matrix maximum upper
 */
 
-static void		fix_h_align(t_figure **figure)
+void			fix_h_align(t_figure **figure)
 {
 	int		i;
 	int		j;
@@ -66,7 +66,7 @@ static void		fix_h_align(t_figure **figure)
 **	Function moves figure in figure->matrix maximum left
 */
 
-static void		fix_v_align(t_figure **figure)
+void			fix_v_align(t_figure **figure)
 {
 	int		i;
 	int		j;
@@ -130,9 +130,7 @@ static t_bool	validate_figure(t_figure *figure)
 					continue ;
 				return (false);
 			}
-	}
-	fix_h_align(&figure);
-	fix_v_align(&figure);
+	}	
 	return (blocks == 4 ? true : false);
 }
 

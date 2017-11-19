@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 16:31:11 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/16 14:14:37 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/18 18:42:34 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,19 @@ static int	calc_width(char matrix[4][4])
 {
 	int		i;
 	int		j;
-	int		width_t;
 	int		width;
 
 	width = 0;
-	width_t = 0;
 	i = -1;
 	while (++i < 4)
 	{
 		j = -1;
 		while (++j < 4)
-		{
-			if (matrix[i][j] == '#')
-				while (matrix[i][j++] == '#')
-					width_t++;
-		}
-		if (width_t > width)
-			width = width_t;
-		width_t = 0;
+			if (matrix[j][i] == '#')
+			{
+				width++;
+				break ;
+			}
 	}
 	return (width);
 }
@@ -71,27 +66,20 @@ static int	calc_width(char matrix[4][4])
 static int	calc_height(char matrix[4][4])
 {
 	int		i;
-	int		i_t;
 	int		j;
-	int		height_t;
 	int		height;
 
 	height = 0;
-	height_t = 0;
 	i = -1;
 	while (++i < 4)
 	{
 		j = -1;
 		while (++j < 4)
-		{
-			i_t = i;
-			if (matrix[i_t][j] == '#')
-				while (matrix[i_t++][j] == '#')
-					height_t++;
-			if (height_t > height)
-				height = height_t;
-			height_t = 0;
-		}
+			if (matrix[i][j] == '#')
+			{
+				height++;
+				break ;
+			}
 	}
 	return (height);
 }
@@ -136,6 +124,8 @@ t_figure	*new_figure(char name, char matrix[4][4])
 			new->matrix[i][j] = matrix[i][j];
 	}
 	new->name = name;
+	fix_h_align(&new);
+	fix_v_align(&new);
 	calc_figure_size(new);
 	new->next = NULL;
 	return (new);
