@@ -6,57 +6,42 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 15:58:02 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 14:12:47 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/19 20:26:02 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
-#include <stdio.h>
 
-void	print_figures(void)
+void		clear_matrix(t_row *src)
 {
-	t_figure	*tmp;
+	t_row		**tmp;
+	t_row		*buff;
 
-	tmp = g_figures;
-	while (tmp)
+	tmp = &src->next;
+	while (*tmp != src)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-				printf("%c", tmp->matrix[i][j]);
-			printf("\n");
-		}
-		printf("\nHeight - %d, Width - %d\n", tmp->height, tmp->width);
-		tmp = tmp->next;
+		buff = (*tmp)->next;
+		ft_bzero((*tmp)->columns, g_square_size + 1);
+		free((*tmp)->columns);
+		free(*tmp);
+		*tmp = buff;
 	}
-	printf("\n");
+	src->next = src;
+	src->prev = src;
 }
 
-void	debug_print(t_row *matrix)
+void		clear_matrix_safe(t_row **src)
 {
-	t_row	*tmp_r;
-	int		i;
-	int		j;
-	int		k;
+	t_row		**tmp;
 
-	tmp_r = matrix;
-	k = 0;
-	while ((tmp_r = tmp_r->next) != matrix)
+	tmp = src;
+	while (*(tmp = &(*tmp)->next) != *src)
 	{
-		i = -1;
-		while (++i < g_figure_count)
-			printf("%d ", get_bit_value(tmp_r->columns[0], i));
-		i = 0;
-		while (++i <= g_square_size)
-		{
-			j = -1;
-			while (++j < g_square_size)
-				printf("%d ", get_bit_value(tmp_r->columns[i], j));			
-		}
-		printf("\n");
+		(*tmp)->next->prev = (*tmp)->prev;
+		(*tmp)->prev->next = (*tmp)->next;
+		tmp = &(*tmp)->prev;
 	}
-	printf("\n\n");
 }
 
 int			get_biggest_sqrt(int num)
@@ -85,27 +70,26 @@ void		fill_poss_positions(t_figure *figure, int h, int w)
 	}
 }
 
-/*	CHANGE */
-
 void		fill_basic_matrix(void)
 {
 	int			d_limits[2];
 	int			d[2];
 	t_figure	*tmp;
 
-	tmp = g_figures;	
+	tmp = g_figures;
 	while (tmp)
 	{
 		d_limits[0] = g_square_size - tmp->height + 1;
-		d_limits[1] = g_square_size - tmp->width + 1;		
-		d[0] = -1;		
+		d_limits[1] = g_square_size - tmp->width + 1;
+		d[0] = -1;
 		while (++d[0] < d_limits[0])
 		{
 			d[1] = -1;
 			while (++d[1] < d_limits[1])
-			{				
+			{
 				push_row(&g_basic_matrix, NULL, 1 + g_square_size);
-				set_bit_true(&g_basic_matrix->prev->columns[0], tmp->name - 'A');
+				set_bit_true(&g_basic_matrix->prev->columns[0],
+								tmp->name - 'A');
 				fill_poss_positions(tmp, d[0], d[1]);
 			}
 		}

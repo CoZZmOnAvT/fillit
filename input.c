@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 15:10:23 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/18 18:38:08 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/19 19:10:15 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,17 @@ static t_bool	validate_figure(t_figure *figure)
 		while (++j < 4)
 			if (figure->matrix[i][j] == '#')
 			{
-				if (blocks++ > 4)
-					return (false);
-				if ((i - 1 >= 0 && figure->matrix[i - 1][j] == '#')
-					|| (i + 1 < 4 && figure->matrix[i + 1][j] == '#')
-					|| (j - 1 >= 0 && figure->matrix[i][j - 1] == '#')
-					|| (j + 1 < 4 && figure->matrix[i][j + 1] == '#'))
-					continue ;
-				return (false);
+				if (i - 1 >= 0 && figure->matrix[i - 1][j] == '#')
+					blocks++;
+				if (i + 1 < 4 && figure->matrix[i + 1][j] == '#')
+					blocks++;
+				if (j - 1 >= 0 && figure->matrix[i][j - 1] == '#')
+					blocks++;
+				if (j + 1 < 4 && figure->matrix[i][j + 1] == '#')
+					blocks++;
 			}
-	}	
-	return (blocks == 4 ? true : false);
+	}
+	return (blocks == 6 || blocks == 8);
 }
 
 /*
@@ -202,9 +202,9 @@ t_bool			get_figures(char *file_name)
 		if (sys[1] == 3)
 		{
 			sys[1] = 0;
-			figure_push(&g_figures, sys[3] + g_figure_count++, tmp);
 			if (((sys[2] = !read(sys[0], &symb, 1)) && symb != '\n')
-				|| validate_figure(g_figures) == false)
+				|| validate_figure(figure_push(&g_figures, sys[3]
+						+ g_figure_count++, tmp)) == false)
 				return (false);
 		}
 		else

@@ -6,14 +6,14 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:41:30 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/18 21:06:20 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/19 16:03:51 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
 
-static t_row	*new_row(int columns)
+t_row	*new_row(int columns)
 {
 	t_row	*new;
 
@@ -26,7 +26,7 @@ static t_row	*new_row(int columns)
 	return (new);
 }
 
-t_row			*push_row(t_row **dest, unsigned int *columns, int size)
+t_row	*push_row(t_row **dest, unsigned int *columns, int size)
 {
 	t_row	*new;
 
@@ -35,7 +35,7 @@ t_row			*push_row(t_row **dest, unsigned int *columns, int size)
 	if (!(new = new_row(size)))
 		return (NULL);
 	if (columns)
-		while (size-- >= 0)
+		while (--size >= 0)
 			new->columns[size] = columns[size];
 	if (!*dest)
 	{
@@ -49,7 +49,7 @@ t_row			*push_row(t_row **dest, unsigned int *columns, int size)
 	return (*dest);
 }
 
-void			pop_row(t_row **src)
+void	pop_row(t_row **src)
 {
 	t_row	*buff;
 
@@ -59,7 +59,7 @@ void			pop_row(t_row **src)
 	free(buff);
 }
 
-void			add_row(t_row **dest, t_row *src)
+void	add_row(t_row **dest, t_row *src)
 {
 	if (!dest)
 		return ;
@@ -76,7 +76,7 @@ void			add_row(t_row **dest, t_row *src)
 	src->next = *dest;
 }
 
-void			add_row_at_the_beginning(t_row **dest, t_row *src)
+void	add_row_at_the_beginning(t_row **dest, t_row *src)
 {
 	if (!dest)
 		return ;

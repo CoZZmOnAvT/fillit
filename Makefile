@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/10 12:28:22 by pgritsen          #+#    #+#              #
-#    Updated: 2017/11/18 19:51:40 by pgritsen         ###   ########.fr        #
+#    Updated: 2017/11/19 16:04:33 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME		=	fillit
 HEADERS		=	fillit.h
 
 SRC			=	heart.c bit_operations.c input.c figures.c alcorythm_x.c	\
-				helpers.c row_operations.c
+				helpers.c row_operations.c output.c row_operations_addition.c
 
 LIBFOLDER	=	libft
 

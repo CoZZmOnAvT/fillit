@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 20:22:27 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/18 21:09:15 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/19 20:25:53 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ extern t_row		*g_tmp_matrix;
 
 extern t_figure		*g_figures;
 
-extern t_row		*g_t_sol;
-
-extern t_row		*g_b_sol;
+extern t_row		*g_sol;
 
 /*
 **	Prototypes
@@ -77,29 +75,40 @@ void				set_bit_false(unsigned int *string, char index);
 
 t_bool				get_figures(char *file_name);
 
-void				print_figures(void);
-
 void				fix_h_align(t_figure **figure);
 
 void				fix_v_align(t_figure **figure);
 
-void				figure_push(t_figure **dest, char name, char matrix[4][4]);
+t_figure			*figure_push(t_figure **dest, char name, char matrix[4][4]);
 
 t_figure			*new_figure(char name, char matrix[4][4]);
 
 void				ft_solve(void);
 
+void				ft_rev_solve(void);
+
 int					get_biggest_sqrt(int num);
 
 void				fill_basic_matrix(void);
 
+t_row				*new_row(int columns);
+
 t_row				*push_row(t_row **dest, unsigned int *columns, int size);
+
+t_row				*push_row_begin(t_row **dest, unsigned int *columns,
+									int size);
 
 void				pop_row(t_row **src);
 
 void				add_row(t_row **dest, t_row *src);
 
 void				add_row_at_the_beginning(t_row **dest, t_row *src);
+
+void				clear_matrix(t_row *src);
+
+void				clear_matrix_safe(t_row **src);
+
+int					print_result(void);
 
 void				debug_print(t_row *matrix);
 
