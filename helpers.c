@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 15:58:02 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/18 21:21:23 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/19 14:12:47 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void		fill_poss_positions(t_figure *figure, int h, int w)
 				set_bit_true(&g_basic_matrix->prev->columns[i + h + 1], j + w);
 	}
 }
+
+/*	CHANGE */
 
 void		fill_basic_matrix(void)
 {
