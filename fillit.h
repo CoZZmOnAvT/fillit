@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 20:22:27 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 20:25:53 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/20 18:34:24 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ typedef struct		s_figure
 	struct s_figure	*next;
 }					t_figure;
 
+typedef struct		s_container
+{
+	struct s_container	*prev;
+	t_row				*row;
+	struct s_container	*next;
+}					t_container;
+
 /*
 **	Global variables
 */
@@ -83,9 +90,9 @@ t_figure			*figure_push(t_figure **dest, char name, char matrix[4][4]);
 
 t_figure			*new_figure(char name, char matrix[4][4]);
 
-void				ft_solve(void);
+void				ft_solve(int k);
 
-void				ft_rev_solve(void);
+void				ft_calc_square(int k);
 
 int					get_biggest_sqrt(int num);
 
@@ -100,16 +107,10 @@ t_row				*push_row_begin(t_row **dest, unsigned int *columns,
 
 void				pop_row(t_row **src);
 
-void				add_row(t_row **dest, t_row *src);
-
-void				add_row_at_the_beginning(t_row **dest, t_row *src);
+t_container			*push_to_container(t_container **dest, t_row *data);
 
 void				clear_matrix(t_row *src);
 
-void				clear_matrix_safe(t_row **src);
-
 int					print_result(void);
-
-void				debug_print(t_row *matrix);
 
 #endif

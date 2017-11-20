@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 15:58:02 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 20:26:02 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/20 18:39:22 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,6 @@ void		clear_matrix(t_row *src)
 	}
 	src->next = src;
 	src->prev = src;
-}
-
-void		clear_matrix_safe(t_row **src)
-{
-	t_row		**tmp;
-
-	tmp = src;
-	while (*(tmp = &(*tmp)->next) != *src)
-	{
-		(*tmp)->next->prev = (*tmp)->prev;
-		(*tmp)->prev->next = (*tmp)->next;
-		tmp = &(*tmp)->prev;
-	}
 }
 
 int			get_biggest_sqrt(int num)

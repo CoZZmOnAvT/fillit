@@ -6,13 +6,14 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 14:21:22 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 20:26:19 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/20 18:59:06 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
-#include <stdio.h>
+
+long	g_iterarions = 0;
 
 int		*ft_choose_column(void)
 {
@@ -41,11 +42,10 @@ int		*ft_choose_column(void)
 	return (it);
 }
 
-void	ft_cover_row(t_row *row, t_row **g_tmp_matrix)
+void	ft_clear_rows(t_row *row, t_container **row_container)
 {
 	int		i;
 	t_row	**tmp;
-	t_row	*buff;
 
 	tmp = &g_basic_matrix;
 	while (*(tmp = &(*tmp)->next) != g_basic_matrix)
@@ -55,10 +55,9 @@ void	ft_cover_row(t_row *row, t_row **g_tmp_matrix)
 		{
 			if ((row->columns[i] & (*tmp)->columns[i]) != 0)
 			{
-				buff = *tmp;
+				push_to_container(row_container, *tmp);
 				(*tmp)->next->prev = (*tmp)->prev;
 				(*tmp)->prev->next = (*tmp)->next;
-				add_row(g_tmp_matrix, buff);
 				tmp = &(*tmp)->prev;
 				break ;
 			}
@@ -66,76 +65,56 @@ void	ft_cover_row(t_row *row, t_row **g_tmp_matrix)
 	}
 }
 
-void	ft_uncover_row(t_row *g_tmp_matrix)
+void	ft_restore_rows(t_container *row_container, t_row *row)
 {
-	t_row	**tmp;
-	t_row	*buff;
+	int			i;
+	t_container	**tmp;
+	t_container	*buff;
 
-	tmp = &g_tmp_matrix;
-	while (*(tmp = &(*tmp)->prev) != g_tmp_matrix)
+	tmp = &row_container;
+	while (*(tmp = &(*tmp)->next) != row_container)
 	{
-		buff = *tmp;
-		(*tmp)->prev->next = (*tmp)->next;
-		(*tmp)->next->prev = (*tmp)->prev;
-		add_row_at_the_beginning(&g_basic_matrix, buff);
-		tmp = &(*tmp)->next;
+		i = -1;
+		while (++i < g_square_size + 1)
+		{
+			if ((row->columns[i] & (*tmp)->row->columns[i]) != 0)
+			{
+				buff = *tmp;
+				(*tmp)->row->next->prev = (*tmp)->row;
+				(*tmp)->row->prev->next = (*tmp)->row;
+				(*tmp)->next->prev = (*tmp)->prev;
+				(*tmp)->prev->next = (*tmp)->next;
+				tmp = &(*tmp)->prev;
+				free(buff);
+				break ;
+			}
+		}
 	}
 }
 
-int		g_f_i_s = 0;
-
-void	ft_solve(void)
+void	ft_solve(int k)
 {
-	int				*coords;
-	t_row			**tmp_matrix;
-	t_row			*g_tmp_matrix;
+	t_row		*buff;
+	t_row		**tmp_matrix;
+	t_container	*row_container;
 
-	g_tmp_matrix = NULL;
-	push_row(&g_tmp_matrix, NULL, 1);
+	row_container = NULL;
+	push_to_container(&row_container, NULL);
 	if (g_basic_matrix == g_basic_matrix->next)
 	{
-		if (g_f_i_s == g_figure_count)
+		if (k == g_figure_count)
 			exit(print_result());
-		return (void)(g_f_i_s = 0);
+		return ;
 	}
-	coords = ft_choose_column();
 	tmp_matrix = &g_basic_matrix;
-	while (*(tmp_matrix = &(*tmp_matrix)->next) != g_basic_matrix)
-		if (get_bit_value((*tmp_matrix)->columns[coords[0]], coords[1]))
-		{
-			g_f_i_s++;
-			push_row(&g_sol, (*tmp_matrix)->columns, 1 + g_square_size);
-			ft_cover_row(*tmp_matrix, &g_tmp_matrix);
-			ft_solve();
-			ft_uncover_row(g_tmp_matrix);
-			pop_row(&g_sol);
-		}
-}
-
-void	ft_rev_solve(void)
-{
-	int				*coords;
-	t_row			**tmp_matrix;
-	t_row			*g_tmp_matrix;
-
-	g_tmp_matrix = NULL;
-	push_row(&g_tmp_matrix, NULL, 1);
-	if (g_basic_matrix == g_basic_matrix->next)
+	while (*(tmp_matrix = &(*tmp_matrix)->next) != g_basic_matrix
+			&& get_bit_value((*tmp_matrix)->columns[0], k))
 	{
-		if (g_f_i_s == g_figure_count)
-			exit(print_result());
-		return (void)(g_f_i_s = 0);
-	}
-	coords = ft_choose_column();
-	tmp_matrix = &g_basic_matrix;
-	while (*(tmp_matrix = &(*tmp_matrix)->prev) != g_basic_matrix)
-		if (get_bit_value((*tmp_matrix)->columns[coords[0]], coords[1]))
-		{
-			g_f_i_s++;
-			push_row(&g_sol, (*tmp_matrix)->columns, 1 + g_square_size);
-			ft_cover_row(*tmp_matrix, &g_tmp_matrix);
-			ft_rev_solve();
-			ft_uncover_row(g_tmp_matrix);
-			pop_row(&g_sol);
-		}
+		buff = *tmp_matrix;
+		push_row(&g_sol, buff->columns, 1 + g_square_size);
+		ft_clear_rows(buff, &row_container);
+		ft_solve(k + 1);
+		pop_row(&g_sol);
+		ft_restore_rows(row_container, buff);
+	}	
 }

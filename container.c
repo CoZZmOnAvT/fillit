@@ -1,61 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   row_operations.c                                   :+:      :+:    :+:   */
+/*   container.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/16 16:41:30 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/20 16:50:37 by pgritsen         ###   ########.fr       */
+/*   Created: 2017/11/20 13:37:43 by pgritsen          #+#    #+#             */
+/*   Updated: 2017/11/20 16:40:49 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "libft/libft.h"
 
-t_row	*new_row(int columns)
+static t_container	*ft_new_container(t_row *data)
 {
-	t_row	*new;
+	t_container	*new;
 
-	if (!(new = (t_row *)malloc(sizeof(t_row))))
+	if (!(new = (t_container *)malloc(sizeof(t_container))))
 		return (NULL);
-	if (!(new->columns = (unsigned int *)ft_memalloc(columns * sizeof(int))))
-		return (NULL);
+	new->row = data;
 	new->next = new;
 	new->prev = new;
 	return (new);
 }
 
-t_row	*push_row(t_row **dest, unsigned int *columns, int size)
+t_container			*push_to_container(t_container **dest, t_row *data)
 {
-	t_row	*new;
+	t_container	*new;
 
 	if (!dest)
 		return (NULL);
-	if (!(new = new_row(size)))
+	if (!(new = ft_new_container(data)))
 		return (NULL);
-	if (columns)
-		while (--size >= 0)
-			new->columns[size] = columns[size];
 	if (!*dest)
-	{
-		*dest = new;
-		return (*dest);
-	}
+		return ((*dest = new));
 	(*dest)->prev->next = new;
 	new->prev = (*dest)->prev;
 	(*dest)->prev = new;
 	new->next = *dest;
 	return (*dest);
-}
-
-void	pop_row(t_row **src)
-{
-	t_row	*buff;
-
-	(*src)->prev->prev->next = *src;
-	buff = (*src)->prev;
-	(*src)->prev = (*src)->prev->prev;
-	free(buff->columns);
-	free(buff);
 }
