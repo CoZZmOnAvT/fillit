@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/20 13:37:43 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/20 16:40:49 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 15:45:17 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ t_container			*push_to_container(t_container **dest, t_row *data)
 		return (NULL);
 	if (!*dest)
 		return ((*dest = new));
-	(*dest)->prev->next = new;
-	new->prev = (*dest)->prev;
-	(*dest)->prev = new;
-	new->next = *dest;
+	(*dest)->next->prev = new;
+	new->next = (*dest)->next;
+	new->prev = *dest;
+	(*dest)->next = new;
 	return (*dest);
 }

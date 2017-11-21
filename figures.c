@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 16:31:11 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 19:09:55 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:01:33 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ static int	calc_width(char matrix[4][4])
 	int		j;
 	int		width;
 
-	width = 0;
-	i = -1;
-	while (++i < 4)
+	width = 0x0;
+	i = -0x1;
+	while (++i < 0x4)
 	{
-		j = -1;
-		while (++j < 4)
+		j = -0x1;
+		while (++j < 0x4)
 			if (matrix[j][i] == '#')
 			{
 				width++;
@@ -69,12 +69,12 @@ static int	calc_height(char matrix[4][4])
 	int		j;
 	int		height;
 
-	height = 0;
-	i = -1;
-	while (++i < 4)
+	height = 0x0;
+	i = -0x1;
+	while (++i < 0x4)
 	{
-		j = -1;
-		while (++j < 4)
+		j = -0x1;
+		while (++j < 0x4)
 			if (matrix[i][j] == '#')
 			{
 				height++;
@@ -104,11 +104,11 @@ t_figure	*new_figure(char name, char matrix[4][4])
 
 	if (!(new = (t_figure *)malloc(sizeof(t_figure))))
 		return (NULL);
-	i = -1;
-	while (++i < 4)
+	i = -0x1;
+	while (++i < 0x4)
 	{
-		j = -1;
-		while (++j < 4)
+		j = -0x1;
+		while (++j < 0x4)
 			new->matrix[i][j] = matrix[i][j];
 	}
 	new->name = name;
@@ -138,16 +138,16 @@ t_figure	*figure_push(t_figure **dest, char name, char matrix[4][4])
 	if (!dest)
 		return (NULL);
 	empty = true;
-	i = -1;
-	while (++i < 4)
+	i = -0x1;
+	while (++i < 0x4)
 	{
-		j = -1;
-		while (++j < 4)
+		j = -0x1;
+		while (++j < 0x4)
 			if (matrix[i][j] == '#')
 				empty = false;
 	}
 	if (empty)
-		matrix[0][0] = '#';
+		matrix[0x0][0x0] = '#';
 	new = new_figure(name, matrix);
 	while (*dest)
 		dest = &(*dest)->next;

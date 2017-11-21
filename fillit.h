@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 20:22:27 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/20 18:34:24 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 15:55:35 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ unsigned char		get_bit_value(unsigned int string, char index);
 
 void				set_bit_true(unsigned int *string, char index);
 
-void				set_bit_false(unsigned int *string, char index);
-
 t_bool				get_figures(char *file_name);
 
 void				fix_h_align(t_figure **figure);
@@ -98,18 +96,15 @@ int					get_biggest_sqrt(int num);
 
 void				fill_basic_matrix(void);
 
+void				clear_matrix(t_row *src);
+
 t_row				*new_row(int columns);
 
 t_row				*push_row(t_row **dest, unsigned int *columns, int size);
 
-t_row				*push_row_begin(t_row **dest, unsigned int *columns,
-									int size);
-
 void				pop_row(t_row **src);
 
 t_container			*push_to_container(t_container **dest, t_row *data);
-
-void				clear_matrix(t_row *src);
 
 int					print_result(void);
 

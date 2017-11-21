@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 15:10:23 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 19:10:15 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:15:24 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,22 @@ void			fix_h_align(t_figure **figure)
 {
 	int		i;
 	int		j;
-	char	buff[4];
+	char	buff[0x4];
 	t_bool	empty;
 
 	empty = true;
-	j = -1;
-	while (++j < 4)
-		if ((*figure)->matrix[0][j] == '#')
+	j = -0x01;
+	while (++j < 0x04)
+		if ((*figure)->matrix[0x0][j] == '#')
 			empty = false;
 	if (empty)
 	{
-		i = -1;
-		while (++i < 3)
+		i = -0x01;
+		while (++i < 0x03)
 		{
-			ft_memcpy(buff, (*figure)->matrix[i + 1], 4);
-			ft_memcpy((*figure)->matrix[i + 1], (*figure)->matrix[i], 4);
-			ft_memcpy((*figure)->matrix[i], buff, 4);
+			ft_memcpy(buff, (*figure)->matrix[i + 0x01], 0x04);
+			ft_memcpy((*figure)->matrix[i + 0x01], (*figure)->matrix[i], 0x04);
+			ft_memcpy((*figure)->matrix[i], buff, 0x04);
 		}
 		fix_h_align(figure);
 	}
@@ -74,20 +74,20 @@ void			fix_v_align(t_figure **figure)
 	t_bool	empty;
 
 	empty = true;
-	i = -1;
-	while (++i < 4)
-		if ((*figure)->matrix[i][0] == '#')
+	i = -0x01;
+	while (++i < 0x04)
+		if ((*figure)->matrix[i][0x0] == '#')
 			empty = false;
 	if (empty)
 	{
-		i = -1;
-		while (++i < 4)
+		i = -0x01;
+		while (++i < 0x04)
 		{
-			j = -1;
-			while (++j < 3)
+			j = -0x01;
+			while (++j < 0x03)
 			{
-				buff = (*figure)->matrix[i][j + 1];
-				(*figure)->matrix[i][j + 1] = (*figure)->matrix[i][j];
+				buff = (*figure)->matrix[i][j + 0x01];
+				(*figure)->matrix[i][j + 0x01] = (*figure)->matrix[i][j];
 				(*figure)->matrix[i][j] = buff;
 			}
 		}
@@ -113,25 +113,25 @@ static t_bool	validate_figure(t_figure *figure)
 	int		j;
 	int		blocks;
 
-	blocks = 0;
-	i = -1;
-	while (++i < 4)
+	blocks = 0b00000000000000000000000000000000;
+	i = -0x01;
+	while (++i < 0x04)
 	{
-		j = -1;
-		while (++j < 4)
+		j = -0x01;
+		while (++j < 0x04)
 			if (figure->matrix[i][j] == '#')
 			{
-				if (i - 1 >= 0 && figure->matrix[i - 1][j] == '#')
+				if (i - 0x01 >= 0x0 && figure->matrix[i - 0x01][j] == '#')
 					blocks++;
-				if (i + 1 < 4 && figure->matrix[i + 1][j] == '#')
+				if (i + 0x01 < 0x04 && figure->matrix[i + 0x01][j] == '#')
 					blocks++;
-				if (j - 1 >= 0 && figure->matrix[i][j - 1] == '#')
+				if (j - 0x01 >= 0x0 && figure->matrix[i][j - 0x01] == '#')
 					blocks++;
-				if (j + 1 < 4 && figure->matrix[i][j + 1] == '#')
+				if (j + 0x01 < 0x04 && figure->matrix[i][j + 0x01] == '#')
 					blocks++;
 			}
 	}
-	return (blocks == 6 || blocks == 8);
+	return (blocks == 0x06 || blocks == 0x08);
 }
 
 /*
@@ -154,16 +154,16 @@ static t_bool	read_row(int fd, int row, char *symb, char (*tmp)[4][4])
 {
 	int		col;
 
-	col = 0;
-	while (col < 4)
+	col = 0x0;
+	while (col < 0x04)
 	{
-		if (*symb != '#' && *symb != '.')
-			return (0);
+		if (*symb != 0x23 && *symb != 0x2e)
+			return (false);
 		(*tmp)[row][col++] = *symb;
-		if (read(fd, symb, 1) < 0)
-			return (0);
+		if (read(fd, symb, 0x01) < 0x0)
+			return (false);
 	}
-	if (*symb != '\n')
+	if (*symb != 0xA)
 		return (false);
 	return (true);
 }
@@ -186,29 +186,29 @@ static t_bool	read_row(int fd, int row, char *symb, char (*tmp)[4][4])
 
 t_bool			get_figures(char *file_name)
 {
-	char	tmp[4][4];
-	int		sys[4];
+	char	tmp[0x04][0x04];
+	int		sys[0x04];
 	char	symb;
 
-	if ((sys[0] = open(file_name, O_RDONLY)) == -1)
-		return (0);
-	sys[1] = 0;
-	sys[2] = 1;
-	sys[3] = 'A';
-	while (read(sys[0], &symb, 1) || !sys[2])
+	if ((sys[0x0] = open(file_name, O_RDONLY)) == -0x01)
+		return (false);
+	sys[1] = 0x0;
+	sys[2] = 0x01;
+	sys[3] = 0x41;
+	while (read(sys[0x0], &symb, 0x1) || !sys[0x2])
 	{
-		if (read_row(sys[0], sys[1], &symb, &tmp) == false)
+		if (read_row(sys[0x0], sys[0x1], &symb, &tmp) == false)
 			return (false);
-		if (sys[1] == 3)
+		if (sys[0x1] == 0x3)
 		{
-			sys[1] = 0;
-			if (((sys[2] = !read(sys[0], &symb, 1)) && symb != '\n')
-				|| validate_figure(figure_push(&g_figures, sys[3]
+			sys[0x1] = 0x0;
+			if (((sys[2] = !read(sys[0x0], &symb, 0x1)) && symb != '\n')
+				|| validate_figure(figure_push(&g_figures, sys[0x3]
 						+ g_figure_count++, tmp)) == false)
 				return (false);
 		}
 		else
-			sys[1]++;
+			sys[0x1]++;
 	}
-	return (symb != 0 ? true : false);
+	return (symb ? true : false);
 }

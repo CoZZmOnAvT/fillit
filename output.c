@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/19 15:33:16 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/19 19:59:32 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:18:35 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,25 @@ int			ft_draw(char (*output)[g_square_size][g_square_size])
 	int		i;
 	int		j;
 
-	i = -1;
+	i = -0x1;
 	while (++i < g_square_size)
 	{
-		j = -1;
+		j = -0x1;
 		while (++j < g_square_size)
 			if ((*output)[i][j])
 				ft_putchar((*output)[i][j]);
 			else
-				ft_putchar('.');
-		ft_putchar('\n');
+				ft_putchar(0x2E);
+		ft_putchar(0xA);
 	}
-	return (0);
+	return (00);
 }
 
 void		clear_output(char (*output)[g_square_size][g_square_size])
 {
 	int		i;
 
-	i = -1;
+	i = -0x1;
 	while (++i < g_square_size)
 		ft_bzero((*output)[i], g_square_size);
 }
@@ -44,27 +44,27 @@ void		clear_output(char (*output)[g_square_size][g_square_size])
 int			print_result(void)
 {
 	t_row	*tmp;
-	int		sys[3];
+	int		sys[0x3];
 	char	output[g_square_size][g_square_size];
 
 	tmp = g_sol;
 	clear_output(&output);
 	while ((tmp = tmp->next) != g_sol)
 	{
-		sys[0] = -1;
-		while (++sys[0] < g_figure_count)
-			if (get_bit_value(tmp->columns[0], sys[0]))
+		sys[0x0] = -0x1;
+		while (++sys[0x0] < g_figure_count)
+			if (get_bit_value(tmp->columns[0x0], sys[0x0]))
 			{
-				sys[2] = 'A' + sys[0];
+				sys[0x2] = 0x41 + sys[0x0];
 				break ;
 			}
-		sys[0] = 0;
-		while (++sys[0] <= g_square_size)
+		sys[0x0] = 0x0;
+		while (++sys[0x0] <= g_square_size)
 		{
-			sys[1] = -1;
-			while (++sys[1] < g_square_size)
-				if (get_bit_value(tmp->columns[sys[0]], sys[1]))
-					output[sys[0] - 1][sys[1]] = sys[2];
+			sys[0x1] = -0x1;
+			while (++sys[0x1] < g_square_size)
+				if (get_bit_value(tmp->columns[sys[0x0]], sys[0x1]))
+					output[sys[0x0] - 0x1][sys[0x1]] = sys[0x2];
 		}
 	}
 	return (ft_draw(&output));

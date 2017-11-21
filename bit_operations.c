@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 13:17:02 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/20 13:36:54 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 15:58:36 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 unsigned char	get_bit_value(unsigned int string, char index)
 {
-	return ((string & (1 << index)) >> index);
+	return ((string & (0x1 << index)) >> index);
 }
 
 /*
@@ -32,16 +32,5 @@ unsigned char	get_bit_value(unsigned int string, char index)
 
 void			set_bit_true(unsigned int *string, char index)
 {
-	*string = (*string | (1 << index));
-}
-
-/*
-**	void	set_bit_false(int *string, unsigned char index)
-**
-**	Functions sets bit with $index number in $string number to 0
-*/
-
-void			set_bit_false(unsigned int *string, char index)
-{
-	*string = (*string & ~(1 << index));
+	*string = (*string | (0x1 << index));
 }

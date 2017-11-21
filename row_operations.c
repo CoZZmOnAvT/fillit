@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/16 16:41:30 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/20 16:50:37 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:19:03 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_row	*push_row(t_row **dest, unsigned int *columns, int size)
 	if (!(new = new_row(size)))
 		return (NULL);
 	if (columns)
-		while (--size >= 0)
+		while (--size >= 0x0)
 			new->columns[size] = columns[size];
 	if (!*dest)
 	{
