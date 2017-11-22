@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   figures.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grevenko <grevenko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 16:31:11 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/21 16:01:33 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/22 15:05:28 by grevenko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 /*
 **	static int	calc_width(char matrix[4][4])
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	j is col iterator
+**	j is a col iterator
 **
-**	width_t is temporary width of figure
+**	width_t is a temporary width of the figure
 **
-**	width is finaly width of figure
+**	width is a final width of the figure
 **
-**	Function returns calculated width of figure in matrix[4][4]
+**	the function returns a calculated figure width in matrix[4][4]
 */
 
 static int	calc_width(char matrix[4][4])
@@ -32,12 +32,12 @@ static int	calc_width(char matrix[4][4])
 	int		j;
 	int		width;
 
-	width = 0x0;
-	i = -0x1;
-	while (++i < 0x4)
+	width = 0;
+	i = -1;
+	while (++i < 4)
 	{
-		j = -0x1;
-		while (++j < 0x4)
+		j = -1;
+		while (++j < 4)
 			if (matrix[j][i] == '#')
 			{
 				width++;
@@ -50,17 +50,17 @@ static int	calc_width(char matrix[4][4])
 /*
 **	static int	calc_height(char matrix[4][4])
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	i_t is temporary row iterator
+**	i_t is a temporary row iterator
 **
-**	j is col iterator
+**	j is a col iterator
 **
-**	height_t is temporary height of figure
+**	height_t is a temporary figure height
 **
-**	height is finaly height of figure
+**	height is a final figure height
 **
-**	Function returns calculated height of figure in matrix[4][4]
+**	the function returns a calculated figure height in matrix[4][4]
 */
 
 static int	calc_height(char matrix[4][4])
@@ -69,12 +69,12 @@ static int	calc_height(char matrix[4][4])
 	int		j;
 	int		height;
 
-	height = 0x0;
-	i = -0x1;
-	while (++i < 0x4)
+	height = 0;
+	i = -1;
+	while (++i < 4)
 	{
-		j = -0x1;
-		while (++j < 0x4)
+		j = -1;
+		while (++j < 4)
 			if (matrix[i][j] == '#')
 			{
 				height++;
@@ -87,13 +87,14 @@ static int	calc_height(char matrix[4][4])
 /*
 **	t_figure	*new_figure(char name, char matrix[4][4])
 **
-**	new is an address of new figure
+**	new is an address of a new figure
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	j is col iterator
+**	j is a col iterator
 **
-**	Function allocate memmory for new figure and sets her name, size and matrix
+**	the function allocates memmory for a new figure and sets its name,
+**	size and matrix
 */
 
 t_figure	*new_figure(char name, char matrix[4][4])
@@ -104,11 +105,11 @@ t_figure	*new_figure(char name, char matrix[4][4])
 
 	if (!(new = (t_figure *)malloc(sizeof(t_figure))))
 		return (NULL);
-	i = -0x1;
-	while (++i < 0x4)
+	i = -1;
+	while (++i < 4)
 	{
-		j = -0x1;
-		while (++j < 0x4)
+		j = -1;
+		while (++j < 4)
 			new->matrix[i][j] = matrix[i][j];
 	}
 	new->name = name;
@@ -123,9 +124,9 @@ t_figure	*new_figure(char name, char matrix[4][4])
 /*
 **	t_figure	*new_figure(char name, char matrix[4][4])
 **
-**	new is an address of new figure
+**	new is an address of a new figure
 **
-**	Function push new figure at the begining of **dest stack
+**	the function pushes a new figure to the begining of **dest stack
 */
 
 t_figure	*figure_push(t_figure **dest, char name, char matrix[4][4])
@@ -138,16 +139,16 @@ t_figure	*figure_push(t_figure **dest, char name, char matrix[4][4])
 	if (!dest)
 		return (NULL);
 	empty = true;
-	i = -0x1;
-	while (++i < 0x4)
+	i = -1;
+	while (++i < 4)
 	{
-		j = -0x1;
-		while (++j < 0x4)
+		j = -1;
+		while (++j < 4)
 			if (matrix[i][j] == '#')
 				empty = false;
 	}
 	if (empty)
-		matrix[0x0][0x0] = '#';
+		matrix[0][0] = '#';
 	new = new_figure(name, matrix);
 	while (*dest)
 		dest = &(*dest)->next;

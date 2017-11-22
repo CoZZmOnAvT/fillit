@@ -6,7 +6,7 @@
 /*   By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/15 15:10:23 by pgritsen          #+#    #+#             */
-/*   Updated: 2017/11/21 16:15:24 by pgritsen         ###   ########.fr       */
+/*   Updated: 2017/11/22 17:47:06 by pgritsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,37 @@
 /*
 **	static void		fix_h_align(t_figure **figure)
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	i is col iterator
+**	j is a col iterator
 **
-**	buff[4] is temporaty buffer for matrix one dimension
+**	buff[4] is a temporaty buffer for one-dimensional matrix
 **
-**	empty is variable wich show when row is empty
+**	empty is a variable, which shows when the row is empty
 **
-**	Function moves figure in figure->matrix maximum upper
+**	the function moves a figure to the upper edge of a figure matrix
 */
 
 void			fix_h_align(t_figure **figure)
 {
 	int		i;
 	int		j;
-	char	buff[0x4];
+	char	buff[4];
 	t_bool	empty;
 
 	empty = true;
-	j = -0x01;
-	while (++j < 0x04)
-		if ((*figure)->matrix[0x0][j] == '#')
+	j = -1;
+	while (++j < 4)
+		if ((*figure)->matrix[0][j] == '#')
 			empty = false;
 	if (empty)
 	{
-		i = -0x01;
-		while (++i < 0x03)
+		i = -1;
+		while (++i < 3)
 		{
-			ft_memcpy(buff, (*figure)->matrix[i + 0x01], 0x04);
-			ft_memcpy((*figure)->matrix[i + 0x01], (*figure)->matrix[i], 0x04);
-			ft_memcpy((*figure)->matrix[i], buff, 0x04);
+			ft_memcpy(buff, (*figure)->matrix[i + 1], 4);
+			ft_memcpy((*figure)->matrix[i + 1], (*figure)->matrix[i], 4);
+			ft_memcpy((*figure)->matrix[i], buff, 4);
 		}
 		fix_h_align(figure);
 	}
@@ -55,15 +55,15 @@ void			fix_h_align(t_figure **figure)
 /*
 **	static void		fix_v_align(t_figure **figure)
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	i is col iterator
+**	j is a col iterator
 **
-**	buff is temporaty buffer for one symbol
+**	buff is a temporaty buffer for one symbol
 **
-**	empty is variable wich show when row is empty
+**	empty is a variable, which shows when the row is empty
 **
-**	Function moves figure in figure->matrix maximum left
+**	the function moves a figure to the left edge of a figure matrix
 */
 
 void			fix_v_align(t_figure **figure)
@@ -74,20 +74,20 @@ void			fix_v_align(t_figure **figure)
 	t_bool	empty;
 
 	empty = true;
-	i = -0x01;
-	while (++i < 0x04)
-		if ((*figure)->matrix[i][0x0] == '#')
+	i = -1;
+	while (++i < 4)
+		if ((*figure)->matrix[i][0] == '#')
 			empty = false;
 	if (empty)
 	{
-		i = -0x01;
-		while (++i < 0x04)
+		i = -1;
+		while (++i < 4)
 		{
-			j = -0x01;
-			while (++j < 0x03)
+			j = -1;
+			while (++j < 3)
 			{
-				buff = (*figure)->matrix[i][j + 0x01];
-				(*figure)->matrix[i][j + 0x01] = (*figure)->matrix[i][j];
+				buff = (*figure)->matrix[i][j + 1];
+				(*figure)->matrix[i][j + 1] = (*figure)->matrix[i][j];
 				(*figure)->matrix[i][j] = buff;
 			}
 		}
@@ -98,72 +98,76 @@ void			fix_v_align(t_figure **figure)
 /*
 **	t_bool	validate_figure(t_figure *figure)
 **
-**	i is row iterator
+**	i is a row iterator
 **
-**	j is col iterator
+**	j is a col iterator
 **
-**	blocks is counter that whows how many blocks in figure, should be 4
+**	blocks is a counter, which shows how many blocks are in the figure;
+**	it should be equal to 4
 **
-**	Function returns FALSE if figure brocken, TRUE otherwise
+**	the function returns FALSE if the figure is broken, TRUE otherwise
 */
 
 static t_bool	validate_figure(t_figure *figure)
 {
 	int		i;
 	int		j;
+	int		conections;
 	int		blocks;
 
-	blocks = 0b00000000000000000000000000000000;
-	i = -0x01;
-	while (++i < 0x04)
+	blocks = 0;
+	conections = 0;
+	i = -1;
+	while (++i < 4)
 	{
-		j = -0x01;
-		while (++j < 0x04)
-			if (figure->matrix[i][j] == '#')
+		j = -1;
+		while (++j < 4)
+			if (figure->matrix[i][j] == '#' && ++blocks)
 			{
-				if (i - 0x01 >= 0x0 && figure->matrix[i - 0x01][j] == '#')
-					blocks++;
-				if (i + 0x01 < 0x04 && figure->matrix[i + 0x01][j] == '#')
-					blocks++;
-				if (j - 0x01 >= 0x0 && figure->matrix[i][j - 0x01] == '#')
-					blocks++;
-				if (j + 0x01 < 0x04 && figure->matrix[i][j + 0x01] == '#')
-					blocks++;
+				if (i - 1 >= 0 && figure->matrix[i - 1][j] == '#')
+					conections++;
+				if (i + 1 < 4 && figure->matrix[i + 1][j] == '#')
+					conections++;
+				if (j - 1 >= 0 && figure->matrix[i][j - 1] == '#')
+					conections++;
+				if (j + 1 < 4 && figure->matrix[i][j + 1] == '#')
+					conections++;
 			}
 	}
-	return (blocks == 0x06 || blocks == 0x08);
+	return (blocks == 4 && (conections == 6 || conections == 8));
 }
 
 /*
 **	t_bool	read_row(int fd, int row, char *symb, char (*tmp)[4][4])
 **
-**	fd is file_descriptor
+**	fd is a file_descriptor
 **
-**	row is current_row_in_figure
+**	row is the current row in the figure
 **
-**	*symb is address of symbol readed in get_figures function by system call
+**	*symb is an address of a symbol read in get_figures function
+**	during system call
 **
-**	(*tmp)[4][4] is address of temporary matrix for each figure
+**	(*tmp)[4][4] is an address of a temporary matrix created for each figure
 **
-**	col is current_col_in_figure
+**	col is the current column in the figure
 **
-**	Function returns FALSE when error occurred, TRUE otherwise
+**	the function returns FALSE if an error has occurred, TRUE otherwise
 */
 
 static t_bool	read_row(int fd, int row, char *symb, char (*tmp)[4][4])
 {
 	int		col;
 
-	col = 0x0;
-	while (col < 0x04)
+	col = 0;
+	while (col < 4)
 	{
-		if (*symb != 0x23 && *symb != 0x2e)
+		if (*symb != 35 && *symb != 46)
 			return (false);
 		(*tmp)[row][col++] = *symb;
-		if (read(fd, symb, 0x01) < 0x0)
+		if (read(fd, symb, 1) < 0)
 			return (false);
 	}
-	if (*symb != 0xA)
+	if (*symb != 10)
 		return (false);
 	return (true);
 }
@@ -171,44 +175,44 @@ static t_bool	read_row(int fd, int row, char *symb, char (*tmp)[4][4])
 /*
 **	t_bool	get_figures(char *file_name)
 **
-**	sys is system variable that means:
+**	sys is a system variable, which means the following:
 **		sys[0] = file_descriptor;
 **		sys[1] = current_row_in_figure;
 **		sys[2] = end_of_file reached when 0
 **		sys[3] = name_of_figure
 **
-**	tmp is temporary matrix for each figure
+**	tmp is a temporary matrix for each figure
 **
-**	symb is symbol readed from Read system call
+**	symb is a symbol read during read system call
 **
-**	Function returns FALSE when error occurred, TRUE otherwise
+**	the function returns FALSE if an error has occurred, TRUE otherwise
 */
 
 t_bool			get_figures(char *file_name)
 {
-	char	tmp[0x04][0x04];
-	int		sys[0x04];
+	char	tmp[4][4];
+	int		sys[4];
 	char	symb;
 
-	if ((sys[0x0] = open(file_name, O_RDONLY)) == -0x01)
+	if ((sys[0] = open(file_name, O_RDONLY)) == -1)
 		return (false);
-	sys[1] = 0x0;
-	sys[2] = 0x01;
-	sys[3] = 0x41;
-	while (read(sys[0x0], &symb, 0x1) || !sys[0x2])
+	sys[1] = 0;
+	sys[2] = 1;
+	sys[3] = 65;
+	while (read(sys[0], &symb, 1) || !sys[2])
 	{
-		if (read_row(sys[0x0], sys[0x1], &symb, &tmp) == false)
+		if (read_row(sys[0], sys[1], &symb, &tmp) == false)
 			return (false);
-		if (sys[0x1] == 0x3)
+		if (sys[1] == 3)
 		{
-			sys[0x1] = 0x0;
-			if (((sys[2] = !read(sys[0x0], &symb, 0x1)) && symb != '\n')
-				|| validate_figure(figure_push(&g_figures, sys[0x3]
+			sys[1] = 0;
+			if (((sys[2] = !read(sys[0], &symb, 1)) && symb != '\n')
+				|| validate_figure(figure_push(&g_figures, sys[3]
 						+ g_figure_count++, tmp)) == false)
 				return (false);
 		}
 		else
-			sys[0x1]++;
+			sys[1]++;
 	}
 	return (symb ? true : false);
 }
