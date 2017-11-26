@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/10 12:28:22 by pgritsen          #+#    #+#              #
-#    Updated: 2017/11/20 14:03:28 by pgritsen         ###   ########.fr        #
+#    Updated: 2017/11/26 13:50:03 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,12 @@ OBJDIR		=	obj
 
 OBJ			=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
-all: $(NAME)
+all: lib $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJ) $(HEADERS)
-	make -C $(LIBFOLDER)
+lib:
+	@make -C $(LIBFOLDER)
+
+$(NAME): $(OBJDIR) $(OBJ) $(LIBFOLDER)/libft.a $(HEADERS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFOLDER)/libft.a
 
 $(OBJ): $(OBJDIR)/%.o : %.c
