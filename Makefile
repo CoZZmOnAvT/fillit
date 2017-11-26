@@ -6,7 +6,7 @@
 #    By: pgritsen <pgritsen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/10 12:28:22 by pgritsen          #+#    #+#              #
-#    Updated: 2017/11/26 14:07:32 by pgritsen         ###   ########.fr        #
+#    Updated: 2017/11/26 14:42:08 by pgritsen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,19 +27,21 @@ OBJDIR		=	obj
 
 OBJ			=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
-all: $(NAME)
+all: lib $(NAME)
 
-$(NAME): lib $(OBJDIR) $(OBJ) $(LIBFOLDER)/libft.a $(HEADERS)
+$(NAME): $(OBJDIR) $(OBJ) $(LIBFOLDER)/libft.a $(HEADERS)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFOLDER)/libft.a
 
+$(LIBFOLDER)/libft.a: lib
+
 lib:
-	@make -C $(LIBFOLDER)
+	make -C $(LIBFOLDER)
 
 $(OBJ): $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR):
-	mkdir $(OBJDIR)
+	mkdir -p $(OBJDIR)
 
 clean:
 	make -C $(LIBFOLDER) clean
@@ -50,3 +52,8 @@ fclean: clean
 	rm -rf $(NAME)
 
 re:	fclean all
+
+.DEFAULT:
+	@echo "usage:\n\t-make\n\t-make fillit\n\t-make clean\n\t-make fclean\n\t-make re"
+
+.PHONY: build clean fclean
